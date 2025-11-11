@@ -1,3 +1,3 @@
-module cmd-injection-shop
+module double-it
 
 go 1.21
