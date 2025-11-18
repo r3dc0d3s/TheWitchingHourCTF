@@ -1,4 +1,4 @@
-# Nuclear Warfare
+# WW3
 
 **Category:** Pwn
 
