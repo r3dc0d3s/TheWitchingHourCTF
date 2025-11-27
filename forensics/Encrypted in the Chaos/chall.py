@@ -26,7 +26,7 @@ print("[+] frag5:", frag5)
 print("[+] NONCE:", b64nonce)
 
 # Fake plaintext (Encrypted in fake form)
-plaintext = b"CyberZ{5000_64rb463_7_7ru7h@103921}"
+plaintext = b"CyberZ{6000_64rb463_7_7ru7h@103921}"
 cipher = base64.b64encode(plaintext).decode()
 
 client_ip = "10.10.0.2"
@@ -117,9 +117,49 @@ def make_garbage_packet():
            TCP(sport=random.randint(1000,65000), dport=443, flags="PA") / \
            (b"\x17\x03\x03" + os.urandom(random.randint(30,200)))
 
-print("[*] Generating 5000 garbage packets...")
+
+
+# ============================================================
+# 3b) Add 1000 fake client-server packets
+# ============================================================
+
+print("[*] Generating 1000 fake client-server packets...")
+for _ in range(1000):
+    t = random.randint(1,3)
+    if t == 1:
+        # Fake TLS-like traffic
+        pkts.append(
+            IP(src=client_ip, dst=server_ip)/
+            TCP(sport=random.randint(40000,60000), dport=443, flags="PA")/
+            (b"\x16\x03\x01" + os.urandom(random.randint(20,100)))
+        )
+    elif t == 2:
+        # Fake HTTP request/response
+        pkts.append(
+            IP(src=client_ip, dst=server_ip)/
+            TCP(sport=random.randint(40000,60000), dport=80, flags="PA")/
+            ("GET /"+rand_str(8)+" HTTP/1.1\r\nHost: "+rand_str(5)+".com\r\n\r\n").encode()
+        )
+    else:
+        # Fake encrypted app data
+        pkts.append(
+            IP(src=server_ip, dst=client_ip)/
+            TCP(sport=443, dport=random.randint(40000,60000), flags="PA")/
+            (b"\x17\x03\x03" + os.urandom(random.randint(30,120)))
+        )
+
+
+
+print("[*] Generating 6000 garbage packets...")
 for _ in range(5000):
     pkts.append(make_garbage_packet())
+
+
+
+
+
+random.shuffle(pkts)
+
 
 # ============================================================
 # 4) Write PCAP
