@@ -1,9 +1,0 @@
-**Scenario: The Massive Onion**
-
-We've intercepted a deeply nested data structure, an "onion" with many layers of encoding. Our analysts believe the encoding is a simple two-step process, repeated many times. However, the number of layers seems to change with each transmission.
-
-**Objective:**
-Connect to the server, retrieve the onion, and peel back the layers to find the flag at the center.
-
-**Connection:**
-`nc localhost 1342`
