@@ -27,6 +27,7 @@ frag2 = base64.b64encode(full_key[8:16]).decode()
 frag3 = base64.b64encode(full_key[16:24]).decode()
 frag4 = base64.b64encode(full_key[24:28]).decode()
 frag5 = base64.b64encode(full_key[28:32]).decode()
+frag5 = base64.b64encode(full_key[28:32]).decode()
 
 print("[+] FULL KEY:", full_key.hex())
 print("[+] FRAG1:", frag1)
@@ -46,48 +47,6 @@ client_ip = "10.66.6.13"
 server_ip = "10.66.6.66"
 
 pkts = []
-real_pkts = []
-# --- REAL PACKETS ---
-
-pkts.append(
-    IP(src=client_ip, dst=server_ip)/TCP(sport=44444,dport=443,flags="PA")/
-    (b"first-frag:" + frag1.encode())
-)
-
-pkts.append(
-    IP(src=server_ip, dst=client_ip)/TCP(sport=443,dport=44444,flags="PA")/
-    (b"t9d-tahtaj-had-lpart-galk-smita-'NONCE':" + b64_nonce.encode())
-)
-
-pkts.append(
-    IP(src=server_ip, dst=client_ip)/TCP(sport=443,dport=44444,flags="PA")/
-    (b"tanya:" + frag2.encode())
-)
-
-pkts.append(
-    IP(src=server_ip, dst=client_ip)/TCP(sport=80,dport=44444,flags="PA")/
-    (b"HTTP/1.1 200 OK\r\nX-Hex: FRAG3:" + frag3.encode() + b"\r\n\r\n")
-)
-
-pkts.append(
-    IP(src=server_ip, dst=client_ip)/UDP(sport=44444,dport=44445)/
-    (b"jib-m3ak-rab3a-dsmida:" + frag4.encode())
-)
-
-pkts.append(
-    IP(src=server_ip, dst=client_ip)/TCP(sport=9001,dport=44444,flags="PA")/
-    (b"laynjik-mn-l3ayn:" + frag5.encode())
-)
-
-pkts.append(
-    IP(src=server_ip, dst=client_ip)/TCP(sport=443,dport=44444,flags="PA")/
-    (b"CIPHER:" + b64_cipher.encode())
-)
-
-pkts.append(
-    IP(src=server_ip, dst=client_ip)/TCP(sport=443,dport=44444,flags="PA")/
-    (b"TAG:" + b64_tag.encode())
-)
 
 # ============================================================
 # 4) Garbage and Noise Packets
@@ -128,17 +87,17 @@ def make_garbage_packet():
         b = random.randint(1,3)
         if b == 1:
             # Fake TLS-like traffic
-            pkts.append(IP(src=client_ip,dst=server_ip)/
+            return (IP(src=client_ip,dst=server_ip)/
                         TCP(sport=random.randint(40000,60000), dport=443, flags="PA")/
                         (b"\x16\x03\x01" + os.urandom(random.randint(20,100))))
         elif b == 2:
             # Fake HTTP request/response
-            pkts.append(IP(src=client_ip,dst=server_ip)/
+            return (IP(src=client_ip,dst=server_ip)/
                         TCP(sport=random.randint(40000,60000), dport=80, flags="PA")/
                         ("GET /"+rand_str(8)+" HTTP/1.1\r\nHost:"+rand_str(5)+".com\r\n\r\n").encode())
         else:
             # Fake server app data
-            pkts.append(IP(src=server_ip,dst=client_ip)/
+            return (IP(src=server_ip,dst=client_ip)/
                         TCP(sport=443,dport=random.randint(40000,60000), flags="PA")/
                         (b"\x17\x03\x03" + os.urandom(random.randint(30,120))))
         
@@ -150,12 +109,35 @@ def make_garbage_packet():
 
 
 print("[*] Adding 8000+ garbage packets...")
-for _ in range(6996):
-    pkts.append(make_garbage_packet())
+for i in range(8000):
+    injected = False
+    if i == 32 - 1: # 1
+        pkts.append( IP(src=client_ip, dst=server_ip)/TCP(sport=44444,dport=443,flags="PA")/(b"1x1:" + frag1.encode()))
+        injected = True
+    elif i == 64 - 1: # 2
+        pkts.append(IP(src=server_ip, dst=client_ip)/TCP(sport=443,dport=44444,flags="PA")/(b"tanya:" + frag2.encode()))
+        injected = True
+    elif i == 128 - 1: # 3
+        pkts.append(IP(src=server_ip, dst=client_ip)/TCP(sport=80,dport=44444,flags="PA")/(b"HTTP/1.1 200 OK\r\nX-Hex: FRAG3:" + frag3.encode() + b"\r\n\r\n"))
+        injected = True
+    elif i == 256 - 1: # 4
+        pkts.append(IP(src=server_ip, dst=client_ip)/UDP(sport=44444,dport=44445)/(b"jib-m3ak-rab3a-dsmida:" + frag4.encode()))
+        injected = True
+    elif i ==  512 - 1: # 5
+        pkts.append(IP(src=server_ip, dst=client_ip)/TCP(sport=9001,dport=44444,flags="PA")/(b"laynjik-mn-l3ayn:" + frag5.encode()))
+        injected = True
+    elif i == 1024 - 1: # 6
+        pkts.append(IP(src=server_ip, dst=client_ip)/TCP(sport=443,dport=44444,flags="PA")/(b"t9d-tahtaj-had-lpart-galk-smita-'NONCE':" + b64_nonce.encode()))
+        injected = True
+    elif i == 2048 - 1 : # 7
+        pkts.append(IP(src=server_ip, dst=client_ip)/TCP(sport=443,dport=44444,flags="PA")/(b"TAG:" + b64_tag.encode()))
+        injected = True
+    elif i == 6666 - 1: # 8
+        pkts.append(IP(src=server_ip, dst=client_ip)/TCP(sport=443,dport=44444,flags="PA")/(b"CIPHER:" + b64_cipher.encode()))
+        injected = True
 
-# Shuffle for realism
-random.shuffle(pkts)
-
+    if not injected:
+        pkts.append(make_garbage_packet())
 # ============================================================
 # 5) Save PCAP
 # ============================================================

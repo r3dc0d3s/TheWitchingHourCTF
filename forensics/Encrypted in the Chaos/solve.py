@@ -21,7 +21,7 @@ for p in pkts:
     data = bytes(p[Raw])
 
     # FRAG 1
-    m = re.search(rb"first-frag:([A-Za-z0-9+/=]+)", data)
+    m = re.search(rb"1x1:([A-Za-z0-9+/=]+)", data)
     if m: frag[1] = m.group(1); print("[+] Found FRAG1:", frag[1].decode())
 
     # NONCE
