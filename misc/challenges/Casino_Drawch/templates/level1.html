@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Warmup</title>
+    <style>
+        h4 {
+            color: #f0f0f0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: rgba(30, 30, 30, 0.95);
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #555;
+            width: 80%;
+            max-width: 300px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .modal-content p {
+            color: #e0e0e0;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <h1>Don't let them Controle U</h1>
+        <!--p>Username: admin </p -->
+        <!--p >Password: s3cr3t_p4ssw0rd </p-->
+        <form action="/check_level1" method="POST" autocomplete="off">
+            <input type="text" name="username" placeholder="Username" required><br>
+            <input type="text" name="password" placeholder="Password" required><br>
+            <button type="submit">NEXT</button>
+        </form>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p> Hmmm 🤔 !! </p>
+        </div>
+    </div>
+
+    <script>
+        document.oncontextmenu = function () {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "block";
+            return false;
+        }
+
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function () {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            var modal = document.getElementById("myModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "F12") {
+                e.preventDefault();
+            }
+
+            if (e.ctrlKey && e.shiftKey && ["I", "C", "J"].includes(e.key.toUpperCase())) {
+                e.preventDefault();
+            }
+
+            if (e.ctrlKey && e.key.toUpperCase() === "I") {
+                e.preventDefault();
+            }
+
+        });
+
+    </script>
+</body>
+
+</html>

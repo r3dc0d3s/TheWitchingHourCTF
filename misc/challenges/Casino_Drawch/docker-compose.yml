@@ -1,0 +1,23 @@
+
+services:
+  web:
+    build: .
+    container_name: web
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    restart: always
+    command: gunicorn --bind 0.0.0.0:5000 app:app
+
+  ngrok:
+      image: ngrok/ngrok:latest
+      container_name: ngrok
+      ports:
+        - "4040:4040"
+      env_file:
+        - .env
+      command: http --url=notable-plainly-krill.ngrok-free.app web:5000
+      depends_on:
+        - web
+      restart: unless-stopped
