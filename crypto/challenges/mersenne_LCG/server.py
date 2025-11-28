@@ -12,17 +12,24 @@ def challenge_logic(send_func, recv_func):
     seed = int(time.time() * 1000) # Use a time-based seed for variation
     random.seed(seed)
 
-    # MT19937 requires 624 outputs to reconstruct its state
-    num_outputs_to_give = 624
-    
     send_func("-" * 40)
     send_func("      THE TWISTED ORACLE")
     send_func("-" * 40)
     send_func("I can predict the unpredictable!")
-    send_func(f"I will give you {num_outputs_to_give} outputs from my mind.")
     send_func("You must give me the very next one.")
     send_func("-" * 40)
-    
+
+    try:
+        num_outputs_str = recv_func("How many outputs would you like? > ")
+        num_outputs_to_give = int(num_outputs_str)
+    except (ValueError, TypeError):
+        send_func("\n[-] That is not a valid number.")
+        return
+        
+    if not (0 < num_outputs_to_give <= 1000):
+        send_func("\n[-] Please request a reasonable number of outputs (1-1000).")
+        return
+
     outputs = []
     for i in range(num_outputs_to_give):
         val = random.getrandbits(32) # Standard output size for MT19937

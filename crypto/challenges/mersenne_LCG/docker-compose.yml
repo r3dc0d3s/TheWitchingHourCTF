@@ -1,0 +1,6 @@
+services:
+  mersenne-lcg-challenge:
+    build: .
+    ports:
+      - "1344:1344"
+    restart: unless-stopped
