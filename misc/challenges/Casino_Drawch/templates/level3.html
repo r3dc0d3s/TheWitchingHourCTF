@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Warmup</title>
+    <style>
+        /* Page-specific styles */
+        input[type="text"],
+        input[type="password"] {
+            width: 80%;
+            max-width: 300px;
+        }
+
+        p {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <h1>Help Julius Caesar to make a "Libum"</h1>
+        <input type="text" id="textInput" placeholder="" autocomplete="off" onkeyup="rotateText()">
+        <div class="radio-group" onchange="rotateText()">
+            <label><input type="radio" name="randomNumber" value="8"> 8</label>
+            <label><input type="radio" name="randomNumber" value="12"> 12</label>
+            <label><input type="radio" name="randomNumber" value="5"> 5</label>
+            <label><input type="radio" name="randomNumber" value="20"> 20</label>
+            <label><input type="radio" name="randomNumber" value="3"> 3</label>
+            <label><input type="radio" name="randomNumber" value="15"> 15</label>
+            <label><input type="radio" name="randomNumber" value="10"> 10</label>
+            <label><input type="radio" name="randomNumber" value="9"> 9</label>
+            <label><input type="radio" name="randomNumber" value="6"> 6</label>
+            <label><input type="radio" name="randomNumber" value="18"> 18</label>
+            <label><input type="radio" name="randomNumber" value="1"> 1</label>
+            <label><input type="radio" name="randomNumber" value="4"> 4</label>
+            <label><input type="radio" name="randomNumber" value="11"> 11</label>
+            <label><input type="radio" name="randomNumber" value="2"> 2</label>
+            <label><input type="radio" name="randomNumber" value="14"> 14</label>
+        </div>
+        <div class="radio-group" onchange="rotateText()">
+            <label><input type="radio" name="randomNumber" value="19"> 19</label>
+            <label><input type="radio" name="randomNumber" value="13"> 13</label>
+            <label><input type="radio" name="randomNumber" value="16"> 16</label>
+            <label><input type="radio" name="randomNumber" value="7"> 7</label>
+            <label><input type="radio" name="randomNumber" value="17"> 17</label>
+            <label><input type="radio" name="randomNumber" value="15"> 15</label>
+            <label><input type="radio" name="randomNumber" value="8"> 8</label>
+            <label><input type="radio" name="randomNumber" value="20"> 20</label>
+            <label><input type="radio" name="randomNumber" value="12"> 12</label>
+            <label><input type="radio" name="randomNumber" value="9"> 9</label>
+            <label><input type="radio" name="randomNumber" value="6"> 6</label>
+            <label><input type="radio" name="randomNumber" value="3"> 3</label>
+            <label><input type="radio" name="randomNumber" value="19"> 19</label>
+            <label><input type="radio" name="randomNumber" value="11"> 11</label>
+            <label><input type="radio" name="randomNumber" value="18"> 18</label>
+        </div>
+        <div class="radio-group" onchange="rotateText()">
+            <label><input type="radio" name="randomNumber" value="5"> 5</label>
+            <label><input type="radio" name="randomNumber" value="20"> 20</label>
+            <label><input type="radio" name="randomNumber" value="17"> 17</label>
+            <label><input type="radio" name="randomNumber" value="17"> 17</label>
+            <label><input type="radio" name="randomNumber" value="4"> 4</label>
+            <label><input type="radio" name="randomNumber" value="17"> 17</label>
+            <label><input type="radio" name="randomNumber" value="7"> 7</label>
+            <label><input type="radio" name="randomNumber" value="13"> 13</label>
+            <label><input type="radio" name="randomNumber" value="10"> 10</label>
+            <label><input type="radio" name="randomNumber" value="1"> 1</label>
+            <label><input type="radio" name="randomNumber" value="6"> 6</label>
+            <label><input type="radio" name="randomNumber" value="0"> 0</label>
+            <label><input type="radio" name="randomNumber" value="14"> 14</label>
+            <label><input type="radio" name="randomNumber" value="2"> 2</label>
+            <label><input type="radio" name="randomNumber" value="16"> 16</label>
+        </div>
+        <form action="/check_level3" method="POST" autocomplete="off">
+            <input id="cookie" type="text" name="password" required readonly>
+            <button type="submit">NEXT</button>
+        </form>
+    </div>
+    <script>
+        function rotateText() {
+            const textInput = document.getElementById('textInput').value;
+            const numberValue = parseInt(document.querySelector('input[name="randomNumber"]:checked').value, 10);
+            const result = document.getElementById('cookie');
+            if (textInput.length === 0) {
+                result.innerText = 'No cookies for you!';
+                return;
+            }
+            const encodedText = rotN(textInput, numberValue);
+            result.value = `${encodedText}`;
+        }
+
+        function rotN(str, n) {
+            return str.split('').map(char => {
+                if (char.match(/[a-z]/)) {
+                    return String.fromCharCode(((char.charCodeAt(0) - 97 + n) % 26) + 97);
+                } else if (char.match(/[A-Z]/)) {
+                    return String.fromCharCode(((char.charCodeAt(0) - 65 + n) % 26) + 65);
+                } else {
+                    return char;
+                }
+            }).join('');
+        }
+    </script>
+</body>
+
+</html>
