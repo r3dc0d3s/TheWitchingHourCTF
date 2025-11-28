@@ -1,0 +1,6 @@
+**Scenario: Redundant Broadcast (Static)**
+
+A system broadcasted the same emergency message to three separate command centers, each with a different public key. We've captured all three transmissions in the file `challenge2.txt`.
+
+**Objective:**
+Recover the original secret message from the intercepted ciphertexts in `challenge2.txt`.

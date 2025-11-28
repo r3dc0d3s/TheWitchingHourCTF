@@ -1,0 +1,9 @@
+**Scenario: The Twisted Oracle**
+
+An advanced AI, powered by a sophisticated pseudorandom number generator, claims to predict the future. It offers a glimpse into its internal workings, providing a long sequence of its outputs. However, if you can truly understand its "mind," you should be able to predict its very next thought.
+
+**Objective:**
+Connect to the oracle, observe its outputs, and predict the next value to gain access to its secrets.
+
+**Connection:**
+`nc localhost 1344`

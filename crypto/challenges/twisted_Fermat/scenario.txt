@@ -1,0 +1,13 @@
+**Scenario: Twisted Fermat's Factory**
+
+A system is using a custom RSA key generation process. An audit revealed a critical flaw: the two prime factors, `p` and `q`, used to generate the public modulus `n` are always chosen to be very close to each other. This oversight makes the system vulnerable to specific factorization techniques.
+
+You have been provided with the public modulus `n`, the public exponent `e`, and a ciphertext `c`.
+
+**Objective:**
+Factor the public modulus `n` to find `p` and `q`, and then decrypt the ciphertext `c` to recover the flag.
+
+**Files:**
+*   `fermat_challenge.txt`: Contains `n`, `e`, and `c`.
+*   `twisted_Fermat.py`: The challenge generator (for reference).
+*   `twisted_Fermat_solver.py`: A sample solver (for reference).

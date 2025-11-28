@@ -1,0 +1,9 @@
+**Scenario: The Oracle of Numbers**
+
+An ancient oracle claims to see the future in the patterns of numbers. It will grant you six glimpses into the sequence of fate. If you can predict the seventh number, the oracle will reward you with its deepest secret. Skeptics, however, believe the oracle's "visions" are merely the output of a simple, predictable algorithm.
+
+**Objective:**
+Connect to the oracle, receive the six numbers, and predict the seventh to get the flag.
+
+**Connection:**
+`nc localhost 1341`

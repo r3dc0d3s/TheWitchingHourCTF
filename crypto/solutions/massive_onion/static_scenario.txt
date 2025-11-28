@@ -1,0 +1,6 @@
+**Scenario: The Massive Onion (Static)**
+
+A file, `mirror_onion.txt`, has been found. It appears to be a message encoded with many layers of a simple, two-step encoding process.
+
+**Objective:**
+Unravel the layers of encoding in `mirror_onion.txt` to find the flag at the center.

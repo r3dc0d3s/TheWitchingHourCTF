@@ -1,0 +1,8 @@
+**Scenario: The Founder's Revenge (Static)**
+
+A disgruntled founder's "dead man's switch" has activated, broadcasting a secret key. The system appends a high-precision timestamp to the key before encrypting. We have captured the output of three of these transmissions in `challenge.txt`.
+
+The founder mockingly left a note: "My revenge is only a matter of time."
+
+**Objective:**
+Using the data in `challenge.txt`, recover the secret key. The file contains the public exponent, moduli, ciphertexts, a base timestamp, and the nanosecond deltas applied for each encryption.
