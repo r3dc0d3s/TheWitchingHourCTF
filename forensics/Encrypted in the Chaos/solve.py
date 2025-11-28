@@ -21,15 +21,15 @@ for p in pkts:
     data = bytes(p[Raw])
 
     # FRAG 1
-    m = re.search(rb"WITCH-EXT-FRAG1:([A-Za-z0-9+/=]+)", data)
+    m = re.search(rb"first-frag:([A-Za-z0-9+/=]+)", data)
     if m: frag[1] = m.group(1); print("[+] Found FRAG1:", frag[1].decode())
 
     # NONCE
-    m = re.search(rb"MOON-NONCE:([0-9a-fA-F]+)", data)
+    m = re.search(rb"t9d-tahtaj-had-lpart-galk-smita-'NONCE':([0-9a-fA-F]+)", data)
     if m: nonce = bytes.fromhex(m.group(1).decode()); print("[+] Found NONCE:", m.group(1).decode())
 
     # FRAG 2
-    m = re.search(rb"COVEN-FRAG2:([A-Za-z0-9+/=]+)", data)
+    m = re.search(rb"tanya:([A-Za-z0-9+/=]+)", data)
     if m: frag[2] = m.group(1); print("[+] Found FRAG2:", frag[2].decode())
 
     # FRAG 3
@@ -37,11 +37,11 @@ for p in pkts:
     if m: frag[3] = m.group(1); print("[+] Found FRAG3:", frag[3].decode())
 
     # FRAG 4
-    m = re.search(rb"ALT_BACKUP-FRAG4:([A-Za-z0-9+/=]+)", data)
+    m = re.search(rb"jib-m3ak-rab3a-dsmida:([A-Za-z0-9+/=]+)", data)
     if m: frag[4] = m.group(1); print("[+] Found FRAG4:", frag[4].decode())
 
     # FRAG 5
-    m = re.search(rb"FRAG5:([A-Za-z0-9+/=]+)", data)
+    m = re.search(rb"laynjik-mn-l3ayn:([A-Za-z0-9+/=]+)", data)
     if m: frag[5] = m.group(1); print("[+] Found FRAG5:", frag[5].decode())
 
     # CIPHER

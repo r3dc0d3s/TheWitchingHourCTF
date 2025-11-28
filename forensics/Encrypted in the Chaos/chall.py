@@ -46,22 +46,22 @@ client_ip = "10.66.6.13"
 server_ip = "10.66.6.66"
 
 pkts = []
-
+real_pkts = []
 # --- REAL PACKETS ---
 
 pkts.append(
     IP(src=client_ip, dst=server_ip)/TCP(sport=44444,dport=443,flags="PA")/
-    (b"CLIENT_HELLO|WITCH-EXT-FRAG1:" + frag1.encode())
+    (b"first-frag:" + frag1.encode())
 )
 
 pkts.append(
     IP(src=server_ip, dst=client_ip)/TCP(sport=443,dport=44444,flags="PA")/
-    (b"SERVER_HELLO|MOON-NONCE:" + b64_nonce.encode())
+    (b"t9d-tahtaj-had-lpart-galk-smita-'NONCE':" + b64_nonce.encode())
 )
 
 pkts.append(
     IP(src=server_ip, dst=client_ip)/TCP(sport=443,dport=44444,flags="PA")/
-    (b"TLS_EXT|COVEN-FRAG2:" + frag2.encode())
+    (b"tanya:" + frag2.encode())
 )
 
 pkts.append(
@@ -71,12 +71,12 @@ pkts.append(
 
 pkts.append(
     IP(src=server_ip, dst=client_ip)/UDP(sport=44444,dport=44445)/
-    (b"ALT_BACKUP-FRAG4:" + frag4.encode())
+    (b"jib-m3ak-rab3a-dsmida:" + frag4.encode())
 )
 
 pkts.append(
     IP(src=server_ip, dst=client_ip)/TCP(sport=9001,dport=44444,flags="PA")/
-    (b"WS|FRAG5:" + frag5.encode())
+    (b"laynjik-mn-l3ayn:" + frag5.encode())
 )
 
 pkts.append(
@@ -97,28 +97,8 @@ def rand_str(n):
     return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(n))
 
 
-print("[*] Generating 1000 fake client-server packets...")
-for _ in range(996):
-    t = random.randint(1,3)
-    if t == 1:
-        # Fake TLS-like traffic
-        pkts.append(IP(src=client_ip,dst=server_ip)/
-                    TCP(sport=random.randint(40000,60000), dport=443, flags="PA")/
-                    (b"\x16\x03\x01" + os.urandom(random.randint(20,100))))
-    elif t == 2:
-        # Fake HTTP request/response
-        pkts.append(IP(src=client_ip,dst=server_ip)/
-                    TCP(sport=random.randint(40000,60000), dport=80, flags="PA")/
-                    ("GET /"+rand_str(8)+" HTTP/1.1\r\nHost:"+rand_str(5)+".com\r\n\r\n").encode())
-    else:
-        # Fake server app data
-        pkts.append(IP(src=server_ip,dst=client_ip)/
-                    TCP(sport=443,dport=random.randint(40000,60000), flags="PA")/
-                    (b"\x17\x03\x03" + os.urandom(random.randint(30,120))))
-
-
 def make_garbage_packet():
-    t = random.randint(1,5)
+    t = random.randint(1,6)
 
     if t == 1:
         return IP(src="172.16."+str(random.randint(0,255))+"."+str(random.randint(1,254)),
@@ -143,6 +123,25 @@ def make_garbage_packet():
                   dst="100.64."+str(random.randint(1,255))+"."+str(random.randint(1,255))) / \
                UDP(sport=random.randint(1000,65000), dport=random.randint(1000,65000)) / \
                os.urandom(random.randint(40,200))
+    
+    if t == 5 :
+        b = random.randint(1,3)
+        if b == 1:
+            # Fake TLS-like traffic
+            pkts.append(IP(src=client_ip,dst=server_ip)/
+                        TCP(sport=random.randint(40000,60000), dport=443, flags="PA")/
+                        (b"\x16\x03\x01" + os.urandom(random.randint(20,100))))
+        elif b == 2:
+            # Fake HTTP request/response
+            pkts.append(IP(src=client_ip,dst=server_ip)/
+                        TCP(sport=random.randint(40000,60000), dport=80, flags="PA")/
+                        ("GET /"+rand_str(8)+" HTTP/1.1\r\nHost:"+rand_str(5)+".com\r\n\r\n").encode())
+        else:
+            # Fake server app data
+            pkts.append(IP(src=server_ip,dst=client_ip)/
+                        TCP(sport=443,dport=random.randint(40000,60000), flags="PA")/
+                        (b"\x17\x03\x03" + os.urandom(random.randint(30,120))))
+        
 
     return IP(src="203.0.113."+str(random.randint(2,254)),
               dst="198.51.100."+str(random.randint(2,254))) / \
